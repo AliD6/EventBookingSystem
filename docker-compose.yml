@@ -1,0 +1,40 @@
+
+services:
+  api:
+    container_name: api
+    ports:
+      - "8000:8000"
+    networks:
+      - main
+    restart: 'always'
+    build: ./api
+    env_file:
+      - .env
+    volumes:
+      - ./api:/api
+
+  postgres:
+    container_name: postgres
+    image: registry.sedrehgroup.ir/postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: 'always'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - main
+    env_file:
+      - .env
+
+
+
+volumes:
+  db_data:
+
+
+networks:
+  main:
